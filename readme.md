@@ -36,7 +36,7 @@ This project automates the creation of personalized PDF reports by extracting da
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/pdf-report-generator.git
+git clone https://github.com/DimKouts84/mock_data_PDF_creator
 cd pdf-report-generator
 ```
 
