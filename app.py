@@ -1,60 +1,84 @@
 import pandas as pd
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Spacer, Paragraph
 from reportlab.lib import colors
 from reportlab.lib.units import inch
+from reportlab.lib.styles import getSampleStyleSheet
 import os
-# Read data from CSV file
-data = pd.read_csv('data.csv')
+
+# Load data from CSV
+data = pd.read_csv('test_data.csv')
 
 # Path to logo image
-logo_path = 'logo.png' # Replace with your logo image path
+logo_path = 'logo.png'  # Replace with the path to your logo image
 
 # Check if logo image exists
 if not os.path.isfile(logo_path):
     print(f"Logo image not found at {logo_path}")
     exit(1)
 
-# Iterate over each row in the DataFrame
+# Define report style
+styles = getSampleStyleSheet()
+
+# Iterate over each row in the DataFrame to create individual reports
 for index, row in data.iterrows():
     # Create PDF document
-    
     filename = f'report_{index + 1}.pdf'
     doc = SimpleDocTemplate(filename, pagesize=letter)
     elements = []
-    
-    
-    # Add logo image
+
+    # Add logo
     im = Image(logo_path, width=2*inch, height=2*inch)
     elements.append(im)
     elements.append(Spacer(1, 0.25*inch))
     
-    
-    # Prepare table data
-    table_data = [
-        ['Sample Date', str(row['Sample Date'])],
-        ['Results Date', str(row['Results Date'])],
-        ['HDL', str(row['HDL'])],
-        ['LDL', str(row['LDL'])],
-        ['Ratio', str(row['Ratio'])],
-        ['Triglycerides', str(row['Triglycerides'])]
+    # Add Patient and Report Information
+    report_info = [
+        ["Patient Name:", row['Patient Name']],
+        ["Gender:", row['Gender']],
+        ["Date of Birth:", row['Date of Birth']],
+        ["Order No:", row['Order No']],
+        ["Order Date:", row['Order Date']],
+        ["Report Date:", row['Report Date']],
+        ["Execution ID:", row['Execution ID']],
+        ["Sample Date:", row['Sample Date']]
+    ]
+    report_table = Table(report_info, colWidths=[2*inch, 4*inch])
+    report_table.setStyle(TableStyle([
+        ('GRID', (0,0), (-1,-1), 1, colors.black),
+        ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
+        ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+        ('FONTSIZE', (0,0), (-1,-1), 10),
+    ]))
+    elements.append(report_table)
+    elements.append(Spacer(1, 0.25*inch))
+
+    # Add Examination Information
+    exam_info = [
+        ["LOINC Code", "Exam Name", "Result", "Unit", "Reference Values", "Method"]
     ]
     
-    # Create Table
-    table = Table(table_data, colWidths=[2*inch, 4*inch])
-    
-    # Add style to table
-    style = TableStyle([
+    # Add each exam as a row in the exam_info table
+    for i in range(1, 3):  # Assuming up to 5 exams per report, adjust as needed
+        exam_info.append([
+            row[f'LOINC Code {i}'],
+            row[f'Exam Name {i}'],
+            row[f'Result {i}'],
+            row[f'Unit {i}'],
+            row[f'Reference Values {i}'],
+            row[f'Method {i}']
+        ])
+
+    exam_table = Table(exam_info, colWidths=[1*inch, 2.5*inch, 1*inch, 0.75*inch, 2*inch, 1.25*inch])
+    exam_table.setStyle(TableStyle([
         ('GRID', (0,0), (-1,-1), 1, colors.black),
-        ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,0), (-1,-1), 12),
         ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
-        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
-    ])
-    table.setStyle(style)
-    elements.append(table)
-    
+        ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+        ('FONTSIZE', (0,0), (-1,-1), 10),
+        ('ALIGN', (0,0), (-1,-1), 'LEFT')
+    ]))
+    elements.append(exam_table)
+
     # Build PDF
     doc.build(elements)
-
     print(f"Created {filename}")

@@ -1,0 +1,2 @@
+Patient Name,Gender,Date of Birth,Order No,Order Date,Report Date,Execution ID,Sample Date,LOINC Code 1,Exam Name 1,Result 1,Unit 1,Reference Values 1,Method 1,LOINC Code 2,Exam Name 2,Result 2,Unit 2,Reference Values 2,Method 2,LOINC Code 3,Exam Name 3,Result 3,Unit 3,Reference Values 3,Method 3
+John Doe,Male,1/1/1980,1225071,8/11/2024,9/11/2024,92235343,8/11/2024,2339-0,Glucose fasting,96,mg/dL,74 - 106,Bichromatic rate,1/1/3084,Urate (UA) in Serum,46,mg/dL,3.7 - 9.2,Bichromatic rate,432449,Urate (UA) in Serum,46,mg/dL,3.7 - 9.2,Bichromatic rate
