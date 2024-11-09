@@ -10,7 +10,7 @@ import os
 data = pd.read_csv('test_data.csv')
 
 # Path to logo image
-logo_path = 'LOGO.webp'  # Replace with the path to your logo image
+logo_path = 'LOGO.PNG'  # Replace with the path to your logo image
 
 # Check if logo image exists
 if not os.path.isfile(logo_path):
@@ -28,9 +28,7 @@ for index, row in data.iterrows():
     elements = []
 
     # Add logo
-    im = Image(logo_path, width=5*inch, height=3*inch)
-    elements.append(im)
-    elements.append(Spacer(0.5, 0.25*inch))
+    im = Image(logo_path, width=2*inch, height=2*inch)
     
     # Add Patient and Report Information
     report_info = [
@@ -43,15 +41,27 @@ for index, row in data.iterrows():
         ["Execution ID:", row['Execution ID']],
         ["Sample Date:", row['Sample Date']]
     ]
-    report_table = Table(report_info, colWidths=[1.5*inch, 3*inch])
+    report_table = Table(report_info, colWidths=[2*inch, 3*inch])
     report_table.setStyle(TableStyle([
-        ('GRID', (0,0), (-1,-1), 1, colors.black),
-        ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
         ('FONTSIZE', (0,0), (-1,-1), 9),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 9),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]))
-    elements.append(report_table)
-    elements.append(Spacer(1, 0.25*inch))
+
+    # Combine logo and report_info into a single table
+    combined_table = Table([[im, report_table]], colWidths=[2*inch, 5*inch])
+    combined_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (0, 0), 'TOP'),
+        ('VALIGN', (1, 0), (1, 0), 'TOP'),
+    ]))
+
+    elements.append(combined_table)
+    elements.append(Spacer(0.5, 0.25*inch))
 
     # Add Examination Information
     exam_info = [
