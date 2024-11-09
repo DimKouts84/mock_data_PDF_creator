@@ -10,7 +10,7 @@ import os
 data = pd.read_csv('test_data.csv')
 
 # Path to logo image
-logo_path = 'logo.png'  # Replace with the path to your logo image
+logo_path = 'LOGO.webp'  # Replace with the path to your logo image
 
 # Check if logo image exists
 if not os.path.isfile(logo_path):
@@ -28,9 +28,9 @@ for index, row in data.iterrows():
     elements = []
 
     # Add logo
-    im = Image(logo_path, width=2*inch, height=2*inch)
+    im = Image(logo_path, width=5*inch, height=3*inch)
     elements.append(im)
-    elements.append(Spacer(1, 0.25*inch))
+    elements.append(Spacer(0.5, 0.25*inch))
     
     # Add Patient and Report Information
     report_info = [
@@ -43,12 +43,12 @@ for index, row in data.iterrows():
         ["Execution ID:", row['Execution ID']],
         ["Sample Date:", row['Sample Date']]
     ]
-    report_table = Table(report_info, colWidths=[2*inch, 4*inch])
+    report_table = Table(report_info, colWidths=[1.5*inch, 3*inch])
     report_table.setStyle(TableStyle([
         ('GRID', (0,0), (-1,-1), 1, colors.black),
         ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
         ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
+        ('FONTSIZE', (0,0), (-1,-1), 9),
     ]))
     elements.append(report_table)
     elements.append(Spacer(1, 0.25*inch))
@@ -69,12 +69,12 @@ for index, row in data.iterrows():
             row[f'Method {i}']
         ])
 
-    exam_table = Table(exam_info, colWidths=[1*inch, 2.5*inch, 1*inch, 0.75*inch, 2*inch, 1.25*inch])
+    exam_table = Table(exam_info, colWidths=[0.85*inch, 2.1*inch, 0.85*inch, 0.65*inch, 1.50*inch, 1.05*inch])
     exam_table.setStyle(TableStyle([
         ('GRID', (0,0), (-1,-1), 1, colors.black),
         ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
         ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
+        ('FONTSIZE', (0,0), (-1,-1), 9),
         ('ALIGN', (0,0), (-1,-1), 'LEFT')
     ]))
     elements.append(exam_table)
